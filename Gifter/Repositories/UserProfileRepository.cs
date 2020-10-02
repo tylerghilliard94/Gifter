@@ -153,34 +153,34 @@ namespace Gifter.Repositories
                              
 
                                 userProfile.Posts.Add(post);
-                                
-                                if (DbUtils.IsNotDbNull(reader, "CommentId"))
-                                    
-                                {
-                                    
-
-                                      
-                                            Comment comment = new Comment()
-                                            {
-                                                Id = DbUtils.GetInt(reader, "CommentId"),
-                                                Message = DbUtils.GetString(reader, "Message"),
-                                                PostId = DbUtils.GetInt(reader, "CommentId"),
-                                                UserProfileId = DbUtils.GetInt(reader, "CommentUserProfileId")
-                                            };
-
-
-                                            post.Comments.Add(comment);
-                                       
-
-                                    
-                                }
+                              
                             };
                            
 
 
                         }
-                        
 
+
+                        if (DbUtils.IsNotDbNull(reader, "CommentId"))
+
+                        {
+
+
+
+                            Comment comment = new Comment()
+                            {
+                                Id = DbUtils.GetInt(reader, "CommentId"),
+                                Message = DbUtils.GetString(reader, "Message"),
+                                PostId = DbUtils.GetInt(reader, "PostId"),
+                                UserProfileId = DbUtils.GetInt(reader, "CommentUserProfileId")
+                            };
+
+
+                            post.Comments.Add(comment);
+
+
+
+                        }
 
                     }
 
@@ -192,6 +192,7 @@ namespace Gifter.Repositories
 
             }
         }
+       
         public void Add(UserProfile userProfile)
         {
             using (var conn = Connection)
