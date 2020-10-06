@@ -1,17 +1,21 @@
 import React, { useContext, useState } from "react";
 import { PostContext } from "../Providers/PostProvider";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { useHistory } from "react-router-dom";
 
 const PostForm = () => {
 
     const [post, setPost] = useState({ Title: "", ImageUrl: "", Caption: "", UserProfileId: 1, DateCreated: "" })
     const { getAllPosts, addPost } = useContext(PostContext);
+    const history = useHistory();
 
     const handleNewPost = (event) => {
         event.preventDefault();
-        addPost(post).then(() => {
-            getAllPosts();
-        })
+        addPost(post);
+
+        history.push("/");
+
+
     }
     const handleFieldChange = (event) => {
         const stateToChange = { ...post };

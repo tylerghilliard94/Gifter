@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Gifter.Repositories;
 using Gifter.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gifter.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PostController : ControllerBase
@@ -20,6 +22,11 @@ namespace Gifter.Controllers
         {
             return Ok(_postRepository.GetAll());
         }
+        [HttpGet("User/{id}")]
+        public IActionResult GetbyUser(int id)
+        {
+            return Ok(_postRepository.GetAllByUser(id));
+        }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -31,6 +38,7 @@ namespace Gifter.Controllers
             }
             return Ok(post);
         }
+      
 
         [HttpGet("search")]
         public IActionResult Search(string q, bool sortDesc)

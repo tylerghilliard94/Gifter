@@ -58,6 +58,7 @@ namespace Gifter.Repositories
                 {
                     cmd.CommandText = @"
                          SELECT Id, Name, Email, ImageUrl, DateCreated FROM UserProfile
+                        WHERE Id = @Id
               ORDER BY DateCreated";
 
 
@@ -74,6 +75,47 @@ namespace Gifter.Repositories
                         userProfile.Email = DbUtils.GetString(reader, "Email");
                         userProfile.ImageUrl = DbUtils.GetString(reader, "ImageUrl");
                         userProfile.DateCreated = DbUtils.GetDateTime(reader, "DateCreated");
+
+
+
+                    }
+
+                    reader.Close();
+
+                    return userProfile;
+                }
+
+
+            }
+        }
+
+        public UserProfile GetByFirebaseId(string id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                         SELECT Id, Name, Email, ImageUrl, DateCreated, FirebaseUserId FROM UserProfile
+                        WHERE FirebaseUserId = @Id
+              ORDER BY DateCreated";
+
+
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    var reader = cmd.ExecuteReader();
+
+                    UserProfile userProfile = new UserProfile();
+                    while (reader.Read())
+                    {
+
+                        userProfile.Id = DbUtils.GetInt(reader, "Id");
+                        userProfile.Name = DbUtils.GetString(reader, "Name");
+                        userProfile.Email = DbUtils.GetString(reader, "Email");
+                        userProfile.ImageUrl = DbUtils.GetString(reader, "ImageUrl");
+                        userProfile.DateCreated = DbUtils.GetDateTime(reader, "DateCreated");
+                        userProfile.FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId");
 
 
 
@@ -210,6 +252,7 @@ namespace Gifter.Repositories
                     DbUtils.AddParameter(cmd, "@Bio", null);
                     DbUtils.AddParameter(cmd, "@ImageUrl", userProfile.ImageUrl);
                     DbUtils.AddParameter(cmd, "@DateCreated", userProfile.DateCreated);
+                    DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
 
                     userProfile.Id = (int)cmd.ExecuteScalar();
                 }

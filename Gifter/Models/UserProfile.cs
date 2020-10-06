@@ -21,5 +21,7 @@ namespace Gifter.Models
 
         public List<Post> Posts { get; set; }
 
+        public string FirebaseUserId { get; set; }
+
     }
 }
