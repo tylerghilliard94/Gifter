@@ -10,6 +10,7 @@ const PostForm = () => {
     const history = useHistory();
 
     const handleNewPost = (event) => {
+        debugger
         event.preventDefault();
         addPost(post);
 
